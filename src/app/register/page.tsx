@@ -20,21 +20,39 @@ export default function RegisterPage() {
     setError('')
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: displayName, username },
-      },
+
+    const { data, error: signUpError } = await supabase.auth.signUp({ email, password })
+
+    if (signUpError) {
+      setError(signUpError.message)
+      setLoading(false)
+      return
+    }
+
+    if (!data.user) {
+      setError('登録に失敗しました。もう一度お試しください。')
+      setLoading(false)
+      return
+    }
+
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id,
+      username,
+      display_name: displayName,
     })
 
-    if (error) {
-      setError(error.message)
+    if (profileError) {
+      if (profileError.code === '23505') {
+        setError('このユーザーIDはすでに使われています。別のIDを入力してください。')
+      } else {
+        setError('プロフィールの作成に失敗しました: ' + profileError.message)
+      }
       setLoading(false)
-    } else {
-      router.push('/timeline')
-      router.refresh()
+      return
     }
+
+    router.push('/timeline')
+    router.refresh()
   }
 
   return (
