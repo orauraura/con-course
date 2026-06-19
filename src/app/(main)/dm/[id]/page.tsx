@@ -30,7 +30,7 @@ export default async function DMConversationPage({ params }: { params: Promise<{
     .is('read_at', null)
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[calc(100svh-4rem)] md:h-screen">
       <div className="border-b border-gray-200 bg-white px-6 py-4 flex items-center gap-3">
         <div className="w-9 h-9 rounded-full bg-[#00b4aa] flex items-center justify-center text-white font-semibold">
           {receiver.display_name[0]}

@@ -19,7 +19,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar profile={profile} />
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto pb-16 md:pb-0">{children}</main>
     </div>
   )
 }
